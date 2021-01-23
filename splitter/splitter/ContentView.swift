@@ -12,7 +12,21 @@ struct ContentView: View {
     @State private var tipPercentage = 1
     @State private var numberOfPeople = 2
     var tipPercentages = ["5","10","15","20"]
+    
+    var totalPerPerson: Double {
+        let amount = Double(checkAmount) ?? 0
+        let tipP = Double(tipPercentages[tipPercentage])!
+        let people = Double(numberOfPeople + 1)
+        
+        let tipA = (tipP * amount) / 100
+        
+        let total = Double((amount + tipA) / people)
+        return total
+    }
+
+    
     var body: some View {
+        
         NavigationView{
             Form{
                 Section{
@@ -27,24 +41,25 @@ struct ContentView: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                    Text("Tip % is selected \(tipPercentages[tipPercentage])")
                 }
                 Section{
                     VStack{
                         Picker("Number of people:", selection: $numberOfPeople){
-                            ForEach(0..<10){
+                            ForEach(1..<10){
                                 Text("\($0) people")
                             }
                         }
-//                        Text("Number of pople is : \(numberOfPeople)")
+                        Text("Number of pople is : \(numberOfPeople + 1)")
                     }
                 }
                 
-                let tipPay = Int(checkAmount) ?? 0
-                
-                let total = (tipPay + tipPercentage) / numberOfPeople
-                
+//                let amount = Int(checkAmount) ?? 0
+//
+//                let total = (amount + Int(tipPercentages[tipPercentage])! / (numberOfPeople + 1))
+//
                 Section{
-                    Text("1 Person pay:  \(total)")
+                    Text("Single person pay:  \(totalPerPerson)")
                 }
             }
             .navigationTitle("Splitter")
