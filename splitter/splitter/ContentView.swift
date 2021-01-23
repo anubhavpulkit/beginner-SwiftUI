@@ -34,14 +34,13 @@ struct ContentView: View {
                         .keyboardType(.decimalPad)
                     Text("Cost to pay is: \(checkAmount)")
                 }
-                Section(header: Text("Select % Tip")){
+                Section(header: Text("Select Tip %")){
                     Picker("Percent of Tip", selection: $tipPercentage){
                         ForEach(0..<tipPercentages.count){
                             Text(self.tipPercentages[$0])
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    Text("Tip % is selected \(tipPercentages[tipPercentage])")
                 }
                 Section{
                     VStack{
@@ -50,16 +49,11 @@ struct ContentView: View {
                                 Text("\($0) people")
                             }
                         }
-                        Text("Number of pople is : \(numberOfPeople + 1)")
                     }
                 }
                 
-//                let amount = Int(checkAmount) ?? 0
-//
-//                let total = (amount + Int(tipPercentages[tipPercentage])! / (numberOfPeople + 1))
-//
-                Section{
-                    Text("Single person pay:  \(totalPerPerson)")
+                Section(header: Text("Per person Pay:")){
+                    Text("$\(totalPerPerson, specifier: "%.2f")")
                 }
             }
             .navigationTitle("Splitter")
