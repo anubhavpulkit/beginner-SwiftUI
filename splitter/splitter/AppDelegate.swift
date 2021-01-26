@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  splitter
+//  Splitter
 //
-//  Created by Pully on 21/01/21.
+//  Created by Pully on 26/01/21.
 //
 
 import UIKit

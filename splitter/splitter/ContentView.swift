@@ -1,63 +1,103 @@
 //
 //  ContentView.swift
-//  splitter
+//  ConverterAppi
 //
-//  Created by Pully on 21/01/21.
+//  Created by Pully on 24/01/21.
 //
 
 import SwiftUI
 
 struct ContentView: View {
-    @State private var checkAmount = ""
-    @State private var tipPercentage = 1
-    @State private var numberOfPeople = 2
-    var tipPercentages = ["5","10","15","20"]
+    @State private var input = 0
+    @State private var output = 1
+    @State private var amount = ""
     
-    var totalPerPerson: Double {
-        let amount = Double(checkAmount) ?? 0
-        let tipP = Double(tipPercentages[tipPercentage])!
-        let people = Double(numberOfPeople + 1)
+    var rsult: Float{
         
-        let tipA = (tipP * amount) / 100
+        var Amount: Float = 0
+        let user = Float(amount) ?? 0
+        switch inputType[input] {
+        case "Celsius":
+            if outType[output] == "Celsius"{
+                Amount = user
+            }
+            else if outType[output] == "Fahrenheit"{
+                Amount = (user * 1.8) + 32
+            }
+            else if outType[output] == "kelvin"{
+                Amount = user + 273.15
+            }
+            break
         
-        let total = Double((amount + tipA) / people)
-        return total
+        case "Fahrenheit":
+        if outType[output] == "Celsius"{
+            Amount = (user - 32)/1.8
+        }
+        else if outType[output] == "Fahrenheit"{
+            Amount = user
+        }
+        else if outType[output] == "kelvin"{
+            Amount = (user + 459.67) * 5/9
+        }
+        break
+            
+        case "kelvin":
+        if outType[output] == "Celsius"{
+            Amount = user - 273.15
+        }
+        else if outType[output] == "Fahrenheit"{
+            Amount = (user * 9/5) - 459.67
+        }
+        else if outType[output] == "kelvin"{
+            Amount = user
+        }
+        break
+            
+            
+        default:
+            break
+        }
+        return Amount
     }
-
+    
+    
+    var inputType = ["Celsius","Fahrenheit","kelvin"]
+    var outType = ["Celsius","Fahrenheit","kelvin"]
     
     var body: some View {
-        
         NavigationView{
             Form{
-                Section{
-                    TextField("Enter amount to pay:", text: $checkAmount)
-                        .keyboardType(.decimalPad)
-                    Text("Cost to pay is: \(checkAmount)")
-                }
-                Section(header: Text("Select Tip %")){
-                    Picker("Percent of Tip", selection: $tipPercentage){
-                        ForEach(0..<tipPercentages.count){
-                            Text(self.tipPercentages[$0])
+                Section(header:Text( "Select Input type:")){
+                    Picker("Select input type", selection: $input){
+                        ForEach(0..<inputType.count){
+                            Text("\(self.inputType[$0])")
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                }
-                Section{
-                    VStack{
-                        Picker("Number of people:", selection: $numberOfPeople){
-                            ForEach(1..<10){
-                                Text("\($0) people")
-                            }
-                        }
-                    }
+                    //Text("selected input is \(inputType[input])")
                 }
                 
-                Section(header: Text("Per person Pay:")){
-                    Text("$\(totalPerPerson, specifier: "%.2f")")
+                Section{
+                    TextField("Enter the value to convert:", text: $amount)
+                        .keyboardType(.decimalPad)
+                 //   Text("User input amount : \(amount)")
+                }
+                
+                Section(header: Text("Select output type:")){
+                    Picker("Select input type", selection: $output){
+                        ForEach(0..<outType.count){
+                            Text("\(self.outType[$0])")
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    // Text("the output type is : \(outType[output])")
+                }
+                
+                Section{
+                    Text("\(amount) \(inputType[input]) in \(outType[output]) is : \(rsult, specifier: "%.2f") ")
                 }
             }
-            .navigationTitle("Splitter")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitle("Converter", displayMode: .inline)
         }
     }
 }
@@ -67,3 +107,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
