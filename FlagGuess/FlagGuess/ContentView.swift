@@ -18,7 +18,12 @@ struct ContentView: View {
     var body: some View {
             
         ZStack{
-            Color.blue.edgesIgnoringSafeArea(.all)
+            
+            
+            LinearGradient(gradient: Gradient(colors: [Color.red, Color.yellow]), startPoint: .top, endPoint: .bottom)
+                .edgesIgnoringSafeArea(.all)
+          
+
             
         VStack(spacing: 30){
             
@@ -29,7 +34,9 @@ struct ContentView: View {
             
             Text(country[correctAns])
                 .foregroundColor(.white)
-                .bold()
+                .font(.largeTitle)
+                .fontWeight(.black
+                )
         }
         
             ForEach(0..<3) { number in
@@ -40,7 +47,12 @@ struct ContentView: View {
                 }){
                     Image(self.country[number])
                         .renderingMode(.original)
+                        .renderingMode(.original)
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(Color.black, lineWidth: 1))
+                            .shadow(color: .black, radius: 2)
                 }
+                
             }
             Spacer()
             .alert(isPresented: $showingScore){
