@@ -23,7 +23,7 @@ struct ContentView: View {
     
     var body: some View {
         
-        NavigationView{
+      //  NavigationView{
             
             ZStack{
                 LinearGradient(gradient: Gradient(colors: [.red, .blue]), startPoint: .top, endPoint: .bottom)
@@ -31,7 +31,7 @@ struct ContentView: View {
                 
                 VStack(spacing: 10){
                     VStack{
-                        Text("Rock Paper and Sciesser")
+                        Text("Rock Paper and Scissors")
                             .font(.title).bold()
                             .foregroundColor(.white)
                     }
@@ -57,45 +57,51 @@ struct ContentView: View {
                                 self.title = ""
                                 })
                     }
-                    Text(rSelection)
-                    .padding()
+                    Text("Your Score is: ")
+                        .foregroundColor(.white).bold()
+                        .padding()
                 }
-            }
+          //  }
         }
     }
     
-    func winner(num: Int)  {
-//        var option[num] = option[num]
-        
-        if option[num] == "Rock" && rSelection == "Rock"{
-             title = "Clash"
+        func winner(num: Int)  {
+    //        var option[num] = option[num]
+            
+            if option[num] == "Rock" && rSelection == "Rock"{
+                 title = "Clash"
+            }
+            
+            else if option[num] == "Rock" && rSelection == "Paper"{
+                 title = "Lose"
+            }
+            else if option[num] == "Rock" && rSelection == "Paper"{
+                title = "Lose"
+            }
+            else if option[num] == "Rock" && rSelection == "Sciesser"{
+                title = "Winer"
+            }
+            else if option[num] == "Paper" && rSelection == "Paper"{
+                title = "Clash"
+            }
+            else if option[num] == "Paper" && rSelection == "Rock"{
+                title = "Winer"
+            }
+            else if option[num] == "Paper" && rSelection == "Sciesser"{
+                title = "Lose"
+            }
+            else if option[num] == "Sciesser" && rSelection == "Sciesser"{
+                title = "Clash"
+            }
+            else if option[num] == "Sciesser" && rSelection == "Rock"{
+                title = "Lose"
+            }
+            else if option[num] == "Sciesser" && rSelection == "Paper"{
+                title = "Winer"
+            }
+             self.alort = true
         }
-        else if option[num] == "Rock" && rSelection == "Paper"{
-            title = "Lose"
-        }
-        else if option[num] == "Rock" && rSelection == "Sciesser"{
-            title = "Winer"
-        }
-        else if option[num] == "Paper" && rSelection == "Paper"{
-            title = "Clash"
-        }
-        else if option[num] == "Paper" && rSelection == "Rock"{
-            title = "Winer"
-        }
-        else if option[num] == "Paper" && rSelection == "Sciesser"{
-            title = "Lose"
-        }
-        else if option[num] == "Sciesser" && rSelection == "Sciesser"{
-            title = "Clash"
-        }
-        else if option[num] == "Sciesser" && rSelection == "Rock"{
-            title = "Lose"
-        }
-        else if option[num] == "Sciesser" && rSelection == "Paper"{
-            title = "Winer"
-        }
-         self.alort = true
-    }
+
 }
 
 struct ContentView_Previews: PreviewProvider {
