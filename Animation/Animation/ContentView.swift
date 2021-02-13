@@ -12,20 +12,26 @@ struct ContentView: View {
     
     @State private var animationAmount: CGFloat = 1.0
     var body: some View {
-//        Text("Hello, World!")
-        Button("Tap me"){
-            self.animationAmount += 0.2
+        Button("Tap Me") {
+            // self.animationAmount += 1
         }
-    .padding(50)
-        .foregroundColor(.white)
+        .padding(20)
         .background(Color.red)
-    .clipShape(Capsule())
-    .scaleEffect(animationAmount)
-   //     .animation(.interpolatingSpring(stiffness: 50, damping: 1))
-   // .blur(radius: (animationAmount - 1 ) * 3)
-            .animation( Animation.easeInOut(duration: 1)
-                   .repeatForever(autoreverses: true)
-                .delay(1))
+        .foregroundColor(.white)
+        .clipShape(Circle())
+        .overlay(
+            Circle()
+                .stroke(Color.red)
+                .scaleEffect(animationAmount)
+                .opacity(Double(2 - animationAmount))
+                .animation(
+                    Animation.easeOut(duration: 1)
+                        .repeatForever(autoreverses: true)
+                )
+        )
+        .onAppear {
+            self.animationAmount = 2
+        }
 
     }
 }
