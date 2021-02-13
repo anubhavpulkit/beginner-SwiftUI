@@ -12,27 +12,49 @@ struct ContentView: View {
     
     @State private var animationAmount: CGFloat = 1.0
     var body: some View {
-        Button("Tap Me") {
-            // self.animationAmount += 1
-        }
-        .padding(20)
-        .background(Color.red)
-        .foregroundColor(.white)
-        .clipShape(Circle())
-        .overlay(
-            Circle()
-                .stroke(Color.red)
-                .scaleEffect(animationAmount)
-                .opacity(Double(2 - animationAmount))
-                .animation(
-                    Animation.easeOut(duration: 1)
-                        .repeatForever(autoreverses: true)
+        VStack{
+            
+            Spacer()
+            
+            Stepper("Values", value: $animationAmount, in: 1...10)
+            
+            Spacer()
+            
+            Button("Hello World"){
+                self.animationAmount += 1
+            }
+            .padding(30)
+            .foregroundColor(.white)
+            .background(Color.yellow)
+            .clipShape(Capsule())
+            .scaleEffect(animationAmount)
+            .animation(.interpolatingSpring(stiffness: 30, damping: 2))
+            
+            Spacer()
+            
+            Button("Tap Me") {
+                // self.animationAmount += 1
+            }
+                .padding(20)
+                .background(Color.red)
+                .foregroundColor(.white)
+                .clipShape(Circle())
+                .overlay(
+                    Circle()
+                    .stroke(Color.red)
+                    .scaleEffect(animationAmount)
+                    .opacity(Double(2 - animationAmount))
+                    .animation(
+                        Animation.easeOut(duration: 1)
+                            .repeatForever(autoreverses: true)
                 )
-        )
-        .onAppear {
-            self.animationAmount = 2
+            )
+                .onAppear { // part of Tap me button
+                    self.animationAmount = 2
+            }
+            
+            Spacer()
         }
-
     }
 }
 
