@@ -45,8 +45,9 @@ struct ContentView: View {
                         })
                         {
                             Image(self.option[num])
-                                .renderingMode(.original)
-                                .padding()
+                            .renderingMode(.original)
+                            .resizable()
+                            .frame(width: 150, height: 150)
                         }
                     }
                     Spacer()
