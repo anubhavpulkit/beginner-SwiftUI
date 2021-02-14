@@ -12,11 +12,13 @@ struct ContentView: View {
     
     @State private var animationAmount: CGFloat = 1.0
     var body: some View {
-        VStack{
+        
+        print(animationAmount)
+       return VStack{
             
             Spacer()
             
-            Stepper("Values", value: $animationAmount, in: 1...10)
+            Stepper("Values", value: $animationAmount.animation(.easeInOut), in: 1...10)
             
             Spacer()
             
@@ -28,7 +30,7 @@ struct ContentView: View {
             .background(Color.yellow)
             .clipShape(Capsule())
             .scaleEffect(animationAmount)
-            .animation(.interpolatingSpring(stiffness: 30, damping: 2))
+          //  .animation(.interpolatingSpring(stiffness: 30, damping: 2))
             
             Spacer()
             
