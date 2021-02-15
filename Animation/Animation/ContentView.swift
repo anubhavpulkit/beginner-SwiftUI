@@ -12,6 +12,7 @@ struct ContentView: View {
     
     @State private var animationAmount: CGFloat = 1.0
     @State private var AnimationAmount = 0.0
+    @State private var changed = true
     
     var body: some View {
         
@@ -41,28 +42,17 @@ struct ContentView: View {
             
             Spacer()
             
-            Button("Tap Me") {
-                // self.animationAmount += 1
-            }
-                .padding(20)
-                .background(Color.red)
-                .foregroundColor(.white)
-                .clipShape(Circle())
-                .overlay(
-                    Circle()
-                    .stroke(Color.red)
-                    .scaleEffect(animationAmount)
-                    .opacity(Double(2 - animationAmount))
-                    .animation(
-                        Animation.easeOut(duration: 1)
-                            .repeatForever(autoreverses: true)
-                )
-            )
-                .onAppear { // part of Tap me button
-                    self.animationAmount = 2
-            }
-            
-            Spacer()
+          Button("Tap Me") {
+              self.changed.toggle()
+          }
+          .frame(width: 200, height: 200)
+          
+          .animation(nil)
+          .background(changed ? Color.blue : Color.red)
+          .foregroundColor(.white)
+          .clipShape(RoundedRectangle(cornerRadius: changed ? 60 : 0))
+          .animation(.interpolatingSpring(stiffness: 10, damping: 1))
+                Spacer()
         }
     }
 }
