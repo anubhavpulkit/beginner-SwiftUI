@@ -10,50 +10,20 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var animationAmount: CGFloat = 1.0
-    @State private var AnimationAmount = 0.0
-    @State private var changed = true
+    @State private var dragAmount = CGSize.zero
     
     var body: some View {
         
-        print(animationAmount)
-       return VStack{
-            
-            Spacer()
-            
-            Stepper("Values", value: $animationAmount.animation(.easeInOut), in: 1...10)
-            
-            Spacer()
-            
-            Button("Hello World"){
-                self.animationAmount += 1
-                withAnimation(.easeInOut){
-                self.AnimationAmount += 360
-                }
-            }
-            .padding(30)
-            .foregroundColor(.white)
-            .background(Color.yellow)
-            .clipShape(Capsule())
-            .rotation3DEffect(.degrees(AnimationAmount), axis: (x: 0, y: 1, z: 0))
-            .scaleEffect(animationAmount)
-            .animation(.interpolatingSpring(stiffness: 30, damping: 2))
-        
-            
-            Spacer()
-            
-          Button("Tap Me") {
-              self.changed.toggle()
-          }
-          .frame(width: 200, height: 200)
-          
-          .animation(nil)
-          .background(changed ? Color.blue : Color.red)
-          .foregroundColor(.white)
-          .clipShape(RoundedRectangle(cornerRadius: changed ? 60 : 0))
-          .animation(.interpolatingSpring(stiffness: 10, damping: 1))
-                Spacer()
-        }
+        LinearGradient(gradient: Gradient(colors: [.yellow, .orange]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        .frame(width: 200, height: 200)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .offset(dragAmount) // pass Xand Y coordinates of card
+        .gesture(
+            DragGesture()
+                .onChanged {self.dragAmount = $0.translation }
+                .onEnded { _ in self.dragAmount = .zero } // when user lift there fingure
+        )
+            .animation(.interpolatingSpring(stiffness: 20, damping: 1))
     }
 }
 
