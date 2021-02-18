@@ -61,7 +61,7 @@ struct ContentView: View {
                             .keyboardType(.numberPad)
                         
                             .alert(isPresented: $alert){
-                                Alert(title: Text("Well done / Wrong"), message: Text("Answer is correct"), dismissButton: .default(Text("Next Question"))
+                                Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("Next Question"))
                                     {
                                     self.newQuestion()
                                     })
@@ -74,6 +74,7 @@ struct ContentView: View {
                             print(self.table[0])
                             print(self.practice)
                             print("\(self.practice * self.table[0])")
+                            self.checkAnswer()
                         }
                         
                     }.transition(.opacity)
@@ -89,8 +90,8 @@ struct ContentView: View {
     }
     
     func checkAnswer() {
-        var correctAns = practice * table[0]
-        var userAns = answer
+        let correctAns = practice * table[0]
+        let userAns = Int(answer) ?? 0
         
         if correctAns == userAns{
             title = "Well Done"
@@ -98,7 +99,7 @@ struct ContentView: View {
         }
         else{
             title = "Wrong"
-            message = "Incorrect answer is \(correctAns)"
+            message = "Correct answer is \(correctAns)"
         }
     }
 //
