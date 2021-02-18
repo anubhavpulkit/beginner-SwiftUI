@@ -19,33 +19,34 @@ struct ContentView: View {
     @State private var title = ""
     @State private var message = ""
     @State private var score = 0
+    @State private var count = 0
     
     
     var body: some View {
-    
+        
         let second = self.table[0]
         
-     return   NavigationView{
+        return   NavigationView{
             VStack{
-            Section{
-                
-              Text("Which Multiplication table you want to practice")
-                
-              Stepper("\(practice)", value:$practice, in: 1...12 )
-                .padding(15)
- 
-                Button(action: {
-                    withAnimation(.interpolatingSpring(stiffness: 8, damping: 4)){
-                        self.show = true
+                Section{
+                    
+                    Text("Which Multiplication table you want to practice")
+                    
+                    Stepper("\(practice)", value:$practice, in: 1...12 )
+                        .padding(15)
+                    
+                    Button(action: {
+                        withAnimation(.interpolatingSpring(stiffness: 8, damping: 4)){
+                            self.show = true
+                        }
+                    }){
+                        if show {
+                            Text("")
+                        }
+                        else {
+                            Text("Ask Question")
+                        }
                     }
-                }){
-                    if show {
-                        Text("")
-                    }
-                    else {
-                        Text("Ask Question")
-                    }
-                  }
                 }
                 
                 if show {
@@ -59,10 +60,10 @@ struct ContentView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                             .keyboardType(.numberPad)
-                        
+                            
                             .alert(isPresented: $alert){
-                                Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("Next Question"))
-                                    {
+                                Alert(title: Text(title), message: Text(message), dismissButton: .default(Text("New Question"))
+                                {
                                     self.newQuestion()
                                     })
                         }
@@ -75,10 +76,17 @@ struct ContentView: View {
                             print(self.practice)
                             print("\(self.practice * self.table[0])")
                             self.checkAnswer()
+                            self.count += 1
                         }
                         
                     }.transition(.opacity)
+                    
                     Spacer()
+                    
+                    Section{
+                        Text("Your Score is: \(score).").padding(.init(top: 0, leading: 10, bottom: 5, trailing: 10))
+                        Text("You played \(count) time.").padding(.init(top: 0, leading: 10, bottom: 20, trailing: 10))
+                    }
                 }
             }.navigationBarTitle("Edutainment")
         }
@@ -94,26 +102,23 @@ struct ContentView: View {
         let userAns = Int(answer) ?? 0
         
         if correctAns == userAns{
-            title = "Well Done"
-            message = "Answer is Correct"
+            title = "Well Done😘"
+            message = "Your Answer is Correct💥 \n Lets try new one 🙌"
+            score += 1
         }
         else{
-            title = "Wrong"
-            message = "Correct answer is \(correctAns)"
+            title = "Wrong😬"
+            message = "Correct answer is \(correctAns) \n Lets try new question 🖖"
+            score += 0
         }
     }
-//
-//    func alertMess() {
-//
-//    }
-    
-    }
+}
 #if canImport(UIKit)
- extension View {
-     func hideKeyboard() {
-         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-     }
- }
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
 #endif
 
 struct ContentView_Previews: PreviewProvider {
