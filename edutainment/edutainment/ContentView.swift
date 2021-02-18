@@ -11,15 +11,19 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var practice = 1
-    @State private var table = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    @State private var table = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].shuffled()
     @State private var show = false
     @State private var buttonTitle = ["Ask Question", "Change Question"]
     @State private var answer = ""
     @State private var alert = false
+    @State private var title = ""
+    @State private var message = ""
+    @State private var score = 0
+    
     
     var body: some View {
-     
-        let secondValue = table.randomElement()
+    
+        let second = self.table[0]
         
      return   NavigationView{
             VStack{
@@ -49,13 +53,13 @@ struct ContentView: View {
                     Section{
                         
                         Text("Question is:")
-                        Text("\(practice) * \(secondValue!) = ?")
+                        Text("\(practice) * \(second) = ?")
                         
                         TextField("Enter the Answer", text: $answer )
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                             .keyboardType(.numberPad)
-                            
+                        
                             .alert(isPresented: $alert){
                                 Alert(title: Text("Well done / Wrong"), message: Text("Answer is correct"), dismissButton: .default(Text("Next Question"))
                                     {
@@ -66,6 +70,10 @@ struct ContentView: View {
                         Button("Submit") {
                             self.hideKeyboard()
                             self.alert = true
+                            print(self.answer)
+                            print(self.table[0])
+                            print(self.practice)
+                            print("\(self.practice * self.table[0])")
                         }
                         
                     }.transition(.opacity)
@@ -76,8 +84,27 @@ struct ContentView: View {
     }
     
     func newQuestion(){
-        print("New question")
+        table.shuffle()
+        answer = ""
     }
+    
+    func checkAnswer() {
+        var correctAns = practice * table[0]
+        var userAns = answer
+        
+        if correctAns == userAns{
+            title = "Well Done"
+            message = "Answer is Correct"
+        }
+        else{
+            title = "Wrong"
+            message = "Incorrect answer is \(correctAns)"
+        }
+    }
+//
+//    func alertMess() {
+//
+//    }
     
     }
 #if canImport(UIKit)
