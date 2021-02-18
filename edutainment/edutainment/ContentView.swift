@@ -20,6 +20,12 @@ struct ContentView: View {
     @State private var message = ""
     @State private var score = 0
     @State private var count = 0
+    @State private var animationAmount = 0.0
+    
+    init() {
+           //Use this if NavigationBarTitle is with Large Font
+           UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.systemGray6]
+       }
     
     
     var body: some View {
@@ -27,13 +33,24 @@ struct ContentView: View {
         let second = self.table[0]
         
         return   NavigationView{
+            ZStack{
+                RadialGradient(gradient: Gradient(colors: [.yellow, .orange]), center: .center, startRadius: 2, endRadius: 250)                                   .edgesIgnoringSafeArea(.all)
+                
             VStack{
                 Section{
                     
-                    Text("Which Multiplication table you want to practice")
-                    
+                    Text("Which Multiplication table you want to practice?")
+                        .bold()
+                        .fontWeight(.heavy)
+                        .padding(.init(top: 5, leading: 10, bottom: 0, trailing: 10))
+                        .foregroundColor(.init(red: 250.0, green: 250.0, blue: 210.0))
+                        .fixedSize(horizontal: false, vertical: true) //for multiple line text
+                        
+
                     Stepper("\(practice)", value:$practice, in: 1...12 )
-                        .padding(15)
+                        .padding(25)
+                        .foregroundColor(.white)
+                        
                     
                     Button(action: {
                         withAnimation(.interpolatingSpring(stiffness: 8, damping: 4)){
@@ -45,6 +62,13 @@ struct ContentView: View {
                         }
                         else {
                             Text("Ask Question")
+                                .foregroundColor(.white)
+                                .fontWeight(.heavy)
+                            .padding(20)
+                            .overlay(
+                                       RoundedRectangle(cornerRadius: 20)
+                                           .stroke(Color.white, lineWidth: 5)
+                                   )
                         }
                     }
                 }
@@ -54,7 +78,13 @@ struct ContentView: View {
                     Section{
                         
                         Text("Question is:")
+                            .font(.custom("Helvetica Neue", size: 20.0))
+                        .bold()
+                        .foregroundColor(.init(red: 250.0, green: 250.0, blue: 210.0))
                         Text("\(practice) * \(second) = ?")
+                            .font(.custom("Helvetica Neue", size: 20.0))
+                        .bold()
+                        .foregroundColor(.init(red: 250.0, green: 250.0, blue: 210.0))
                         
                         TextField("Enter the Answer", text: $answer )
                             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -68,7 +98,10 @@ struct ContentView: View {
                                     })
                         }
                         
-                        Button("Submit") {
+                        Button("  Submit  ") {
+                            withAnimation(.interpolatingSpring(stiffness: 5, damping: 1)){
+                                self.animationAmount += 360
+                            }
                             self.hideKeyboard()
                             self.alert = true
                             print(self.answer)
@@ -77,7 +110,11 @@ struct ContentView: View {
                             print("\(self.practice * self.table[0])")
                             self.checkAnswer()
                             self.count += 1
-                        }
+                            }.padding(20)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .clipShape(Capsule())
+                            .rotation3DEffect(.degrees(animationAmount), axis: (x: 0, y: 1, z: 0))
                         
                     }.transition(.opacity)
                     
@@ -85,12 +122,23 @@ struct ContentView: View {
                     
                     Section{
                         Text("Your Score is: \(score).").padding(.init(top: 0, leading: 10, bottom: 5, trailing: 10))
+                        .foregroundColor(.white)
+                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                    
                         Text("You played \(count) time.").padding(.init(top: 0, leading: 10, bottom: 20, trailing: 10))
+                        .foregroundColor(.white)
+                            .font(.system(size: 16, weight: .bold, design: .rounded))
+
                     }
                 }
-            }.navigationBarTitle("Edutainment")
+            }.navigationBarTitle(Text("Edutainment")).navigationBarHidden(false)
+                .onAppear { // part of Tap me button
+                        self.animationAmount = 2
+                }
+
         }
-    }
+                }
+}
     
     func newQuestion(){
         table.shuffle()
