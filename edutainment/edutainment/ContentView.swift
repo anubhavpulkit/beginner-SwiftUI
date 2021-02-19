@@ -34,8 +34,8 @@ struct ContentView: View {
         
         return   NavigationView{
             ZStack{
-                RadialGradient(gradient: Gradient(colors: [.yellow, .orange]), center: .center, startRadius: 2, endRadius: 250)                                   .edgesIgnoringSafeArea(.all)
-                
+                RadialGradient(gradient: Gradient(colors: [.yellow, .orange]), center: .center, startRadius: 2, endRadius: 250)                                  .edgesIgnoringSafeArea(.all)
+                    .blur(radius: 20)
             VStack{
                 Section{
                     
