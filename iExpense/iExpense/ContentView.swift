@@ -9,8 +9,18 @@
 import SwiftUI
 
 struct secondView: View {
+    
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View{
-        Text("This is second view")
+        VStack{
+            Text("This is second view")
+                .padding(40)
+            Button("Dismiss me"){
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        }
+        
     }
 }
 
