@@ -8,36 +8,42 @@
 
 import SwiftUI
 
-struct secondView: View {
-    
-    @Environment(\.presentationMode) var presentationMode
-    
-    var body: some View{
-        VStack{
-            Text("This is second view")
-                .padding(40)
-            Button("Dismiss me"){
-                self.presentationMode.wrappedValue.dismiss()
-            }
-        }
-        
-    }
+class Expenses: ObservableObject {
+    @Published var item = [ExpenseItem]()
 }
 
 struct ContentView: View {
     
-    @State private var secondViewOpen = false
+    @ObservedObject var expense = Expenses()
     
     var body: some View {
-        Button("Tap Me"){
-          
-            self.secondViewOpen.toggle()
-        }
-        .sheet(isPresented: $secondViewOpen){
-            secondView()
-        }
+        
+        NavigationView{
+            
+            List{
+                ForEach(expense.item, id: \.name){ item in
+                    Text(item.name)
+                }
+                .onDelete(perform: removeItem)
+            }
+            .navigationBarItems(trailing:
+                Button(action: {
+                    
+                    let expense = ExpenseItem(name: "TESR", type: "Personal", amount: 34)
+                    self.expense.item.append(expense)
+                    
+                }) {
+                    Image(systemName: "plus")
+            })
+            
+        }.navigationBarTitle("iExpense")
+    }
+    
+    func removeItem(at offsets: IndexSet) {
+        expense.item.remove(atOffsets: offsets)
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
