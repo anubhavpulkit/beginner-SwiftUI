@@ -8,29 +8,24 @@
 
 import SwiftUI
 
-struct User: Codable {
-    var firstName: String
-    var secondName: String
+struct secondView: View {
+    var body: some View{
+        Text("This is second view")
+    }
 }
 
 struct ContentView: View {
     
-    @State private var user = User(firstName: "Taylor", secondName: "Swift")
+    @State private var secondViewOpen = false
     
     var body: some View {
-        
-        VStack{
-            Button("Save User"){
-                
-                let encode = JSONEncoder()
-                if let data = try? encode.encode(self.user){
-                    UserDefaults.standard.set(data, forKey: "UserData")
-                }
-            }
-            
-            Text(user.firstName)
+        Button("Tap Me"){
+          
+            self.secondViewOpen.toggle()
         }
-        
+        .sheet(isPresented: $secondViewOpen){
+            secondView()
+        }
     }
 }
 
