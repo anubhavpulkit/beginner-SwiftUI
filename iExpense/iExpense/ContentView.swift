@@ -10,14 +10,14 @@ import SwiftUI
 
 class Expenses: ObservableObject {
     
-   @Published var items: [ExpenseItem] {
-       didSet {
-           let encoder = JSONEncoder()
-           if let encoded = try? encoder.encode(items) {
-               UserDefaults.standard.set(encoded, forKey: "Items")
-           }
-       }
-   }
+    @Published var items: [ExpenseItem] {
+        
+        didSet {
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(items) {
+                UserDefaults.standard.set(encoded, forKey: "Items")
+            }   }
+    }
     
     init() {
         if let items = UserDefaults.standard.data(forKey: "Items"){ //attempts to read whatever is in “Items” as a Data objec
@@ -29,8 +29,8 @@ class Expenses: ObservableObject {
         }
         self.items = []
     }
+    
 }
-
 
 struct ContentView: View {
     
@@ -43,18 +43,28 @@ struct ContentView: View {
             
             List{
                 ForEach(expense.items){ item in
-                    Text(item.name)
+                    
+                    HStack{
+                        Text(item.name)
+                            .padding(.trailing)
+                        Text(item.type)
+                        Spacer()
+                        Text("$\(item.amount)")
+                    }
+                    
                 }.onDelete(perform: removeItem)
             }
             .sheet(isPresented: $showAddView){
+                
                 AddView(expenses: self.expense)
+                
             }
             .navigationBarItems(trailing:
+                
                 Button(action: {
-                    self.showAddView = true
-                }) {
-                    Image(systemName: "plus")
-            })
+                    self.showAddView = true  })
+                {
+                    Image(systemName: "plus") })
                 .navigationBarTitle("iExpense")
         }
     }
