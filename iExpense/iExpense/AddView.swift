@@ -17,35 +17,38 @@ struct AddView: View {
     
     static let types = ["Personal", "Bussiness"]
     
-    @ObservedObject var expenses: Expenses // using same instace of class which is present in Content view
+    @ObservedObject var expenses: Expenses // using same instace of class which is present in Content view to share data from one view to another view
     
     var body: some View {
         
         NavigationView{
-           
+            
             Form{
                 
                 TextField("Name the expense", text: $name)
                     .padding(30)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    
+                
                 Picker("" ,selection: $type){
                     ForEach(Self.types, id: \.self){
                         Text($0)
                     }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                
                 TextField("Amount", text: $amount)
                     .keyboardType(.numberPad)
                     .padding(30)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                Button("Home Page"){
+            }.navigationBarTitle("Add new expense")
+                .navigationBarItems(trailing: Button("Save") {
+                    if let actualAmount = Int(self.amount) {
+                        let item = ExpenseItem(name: self.name, type: self.type, amount: actualAmount)
+                        self.expenses.items.append(item)
+                    }
                     self.presentationMode.wrappedValue.dismiss()
-                }
-            }
-        }.navigationBarTitle("Add new expense")
+                })
+        }
     }
 }
 
