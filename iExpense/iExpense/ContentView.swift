@@ -47,8 +47,11 @@ struct ContentView: View {
                     HStack{
                         Text(item.name)
                             .padding(.trailing)
+                        
                         Text(item.type)
+                        
                         Spacer()
+                        
                         Text("$\(item.amount)")
                     }
                     
@@ -59,21 +62,21 @@ struct ContentView: View {
                 AddView(expenses: self.expense)
                 
             }
-            .navigationBarItems(trailing:
+            .navigationBarItems(leading: EditButton(), trailing:
                 
                 Button(action: {
                     self.showAddView = true  })
                 {
-                    Image(systemName: "plus") })
+                    Image(systemName: "plus")
+                })
                 .navigationBarTitle("iExpense")
-        }
-    }
+                }
+            }
     
     func removeItem(at offsets: IndexSet) {
         expense.items.remove(atOffsets: offsets)
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
